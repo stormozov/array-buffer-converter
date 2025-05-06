@@ -1,6 +1,13 @@
-// TODO: write your code here
-import sum from './basic';
+import ArrayBufferConverter from './ArrayBufferConverter/ArrayBufferConverter';
 
-console.log('worked');
+const converter = new ArrayBufferConverter();
 
-console.log(sum([1, 2]));
+const data = 'test';
+const buffer = new ArrayBuffer(data.length * 2);
+const view = new Uint16Array(buffer);
+
+[...data].forEach((char, i) => view[i] = char.charCodeAt(0));
+
+converter.load(buffer);
+
+console.log(converter.toString());
