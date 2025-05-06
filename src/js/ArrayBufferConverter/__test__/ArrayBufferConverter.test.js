@@ -16,20 +16,28 @@ describe('Класс ArrayBufferConverter', () => {
   });
 
   describe('Методы экземпляра', () => {
-    describe('Метод load', () => {
+    describe('load()', () => {
       it('Возвращает значение из буфера по умолчанию', () => {
         expect(converter.buffer).toBe(null);
       });
-      
+
       it('Загружает переданный буфер в свойство экземпляра', () => {
         const buffer = new ArrayBuffer(4);
         converter.load(buffer);
 
         expect(converter.buffer).toBe(buffer);
       });
+
+      it('Выбрасывает ошибку, если был передан не ArrayBuffer', () => {
+        const invalidArgs = [123, 104.4, -14, 'test', {}, [], null, undefined, new Uint16Array(2)];
+        invalidArgs.forEach((arg) => {
+          expect(() => converter.load(arg))
+            .toThrow('Аргумент должен быть типа ArrayBuffer');
+        });
+      });
     });
 
-    describe('Метод toString', () => {
+    describe('toString()', () => {
       it('Возвращает пустую строку без буфера', () => {
         expect(converter.toString()).toBe('');
       });

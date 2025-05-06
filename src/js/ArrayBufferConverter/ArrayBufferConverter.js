@@ -11,8 +11,13 @@ export default class ArrayBufferConverter {
   /**
    * Сохраняет переданный ArrayBuffer в свойстве экземпляра.
    * @param {ArrayBuffer} buffer буфер, который нужно сохранить.
+   * @throws {Error} Если переданный аргумент не ArrayBuffer.
    */
   load(buffer) {
+    if (!(buffer instanceof ArrayBuffer)) {
+      throw new Error('Аргумент должен быть типа ArrayBuffer');
+    }
+
     this.#buffer = buffer;
   }
 
@@ -25,11 +30,9 @@ export default class ArrayBufferConverter {
    * @returns {string} конвертированная строка из буфера, либо пустая строка.
    */
   toString() {
-    if ( !this.#buffer ) return '';
-    return Array
-      .from(new Uint16Array(this.#buffer))
-      .map((code) => String.fromCharCode(code))
-      .join('');
+    return this.#buffer 
+      ? String.fromCharCode(...new Uint16Array(this.#buffer))
+      : '';
   }
 
   /**
